@@ -29,6 +29,7 @@
                 <field name="date_start"/>
                 <field name="date_end"/>
                 <field name="location_id"/>
+                <field name="user_id"/>
                 <field name="entry_type" widget="badge"
                        decoration-success="entry_type == 'event'"
                        decoration-info="entry_type == 'lead'"
@@ -72,6 +73,7 @@
                         </group>
                         <group string="Details">
                             <field name="entry_type" widget="badge"/>
+                            <field name="user_id"/>
                             <field name="status" widget="radio" class="o_status_radio"/>
                         </group>
                     </group>

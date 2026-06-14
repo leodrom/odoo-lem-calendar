@@ -61,6 +61,7 @@ class LemCalendarEntry(models.Model):
         ('cancelled', 'Скасовано'),
     ], string='Статус', tracking=True, index=True)
 
+    user_id = fields.Many2one('res.users', string='Відповідальний', tracking=True, index=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
 
@@ -139,12 +140,23 @@ class LemCalendarEntry(models.Model):
             obj = self.env[self.res_model].browse(self.res_id)
             if obj.exists():
                 self.name = obj.display_name
+                if hasattr(obj, 'user_id') and obj.user_id:
+                    self.user_id = obj.user_id
 
     def _get_linked_obj(self, res_model, res_id):
         if not res_model or not res_id:
             return None
         obj = self.env[res_model].browse(res_id)
         return obj if obj.exists() else None
+
+    def _sync_from_linked_obj(self, rec, obj):
+        vals = {}
+        if rec.name != obj.display_name:
+            vals['name'] = obj.display_name
+        if hasattr(obj, 'user_id') and obj.user_id and rec.user_id != obj.user_id:
+            vals['user_id'] = obj.user_id.id
+        if vals:
+            super(LemCalendarEntry, rec).write(vals)
 
     def _post_link_log(self, rec, obj, old_name):
         obj_label = _MODEL_LABEL.get(rec.res_model, rec.res_model)
@@ -175,8 +187,7 @@ class LemCalendarEntry(models.Model):
                 obj = self._get_linked_obj(rec.res_model, rec.res_id)
                 if obj:
                     old_name = rec.name
-                    if rec.name != obj.display_name:
-                        super(LemCalendarEntry, rec).write({'name': obj.display_name})
+                    self._sync_from_linked_obj(rec, obj)
                     self._post_link_log(rec, obj, old_name)
         return records
 
@@ -204,8 +215,7 @@ class LemCalendarEntry(models.Model):
             if not obj:
                 continue
             old_name = old['name']
-            if rec.name != obj.display_name:
-                super(LemCalendarEntry, rec).write({'name': obj.display_name})
+            self._sync_from_linked_obj(rec, obj)
             self._post_link_log(rec, obj, old_name)
 
         return result
