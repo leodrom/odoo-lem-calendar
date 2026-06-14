@@ -13,6 +13,9 @@
     'assets': {
         'web.assets_backend': [
             'lem_calendar/static/src/css/calendar.css',
+            'lem_calendar/static/src/views/lem_calendar/lem_calendar_common_renderer.js',
+            'lem_calendar/static/src/views/lem_calendar/lem_calendar_renderer.js',
+            'lem_calendar/static/src/views/lem_calendar/lem_calendar_view.js',
         ],
     },
     'application': True,

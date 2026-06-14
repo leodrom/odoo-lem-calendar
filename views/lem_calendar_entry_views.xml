@@ -5,7 +5,7 @@
         <field name="name">lem.calendar.entry.calendar</field>
         <field name="model">lem.calendar.entry</field>
         <field name="arch" type="xml">
-            <calendar string="LEM Calendar"
+            <lem_calendar string="LEM Calendar"
                       date_start="date_start"
                       date_stop="date_end"
                       color="color"
@@ -16,7 +16,7 @@
                 <field name="status" filters="1" string="Статус"/>
                 <field name="status_badge" string=" " invisible="not status_badge"/>
                 <field name="linked_object_name" string=" " invisible="not linked_object_name"/>
-            </calendar>
+            </lem_calendar>
         </field>
     </record>
 
