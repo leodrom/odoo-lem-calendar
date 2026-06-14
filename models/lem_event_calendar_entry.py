@@ -112,8 +112,8 @@ class LemCalendarEntry(models.Model):
 
     def _get_reference_models(self):
         return [
-            ('event.event', _('Event')),
-            ('crm.lead', _('Opportunity')),
+            ('event.event', 'Подія'),
+            ('crm.lead', 'Нагода'),
         ]
 
     @api.depends('res_model', 'res_id')
