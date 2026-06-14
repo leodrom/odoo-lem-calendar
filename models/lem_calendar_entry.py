@@ -41,7 +41,7 @@ class LemCalendarEntry(models.Model):
 
     entry_type = fields.Selection([
         ('event', 'Подія'),
-        ('lead', 'Угода'),
+        ('lead', 'Нагода'),
         ('manual', 'Невизначений'),
     ], compute='_compute_entry_type', store=True, string="Об'єкт")
 
@@ -96,7 +96,7 @@ class LemCalendarEntry(models.Model):
     def _get_reference_models(self):
         return [
             ('event.event', 'Подія'),
-            ('crm.lead', 'Угода'),
+            ('crm.lead', 'Нагода'),
         ]
 
     @api.depends('res_model', 'res_id')

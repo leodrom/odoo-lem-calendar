@@ -56,7 +56,7 @@
                                 invisible="entry_type == 'manual'">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text" invisible="entry_type != 'event'">Подія</span>
-                                <span class="o_stat_text" invisible="entry_type != 'lead'">Угода</span>
+                                <span class="o_stat_text" invisible="entry_type != 'lead'">Нагода</span>
                             </div>
                         </button>
                     </div>
@@ -80,6 +80,7 @@
                             <field name="res_model" string="Тип об'єкту"
                                    help="Оберіть тип об'єкта, з яким пов'язаний цей запис. Наприклад: Подія — для подій з модуля Events, Угода — для CRM-угод. Залиште порожнім для ручного запису."/>
                             <field name="res_id" string="Об'єкт" invisible="not res_model"
+                                   domain="[('type', '=', 'opportunity')] if res_model == 'crm.lead' else []"
                                    help="Оберіть конкретний запис обраного типу. Поле доступне після вибору типу об'єкта."/>
                         </group>
                         <group/>

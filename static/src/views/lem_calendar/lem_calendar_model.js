@@ -10,7 +10,7 @@ const STATUS_COLOR = {
 
 const ENTRY_TYPE_OPTIONS = [
     { value: "event",  label: "Подія" },
-    { value: "lead",   label: "Угода" },
+    { value: "lead",   label: "Нагода" },
     { value: "manual", label: "Невизначений" },
 ];
 
