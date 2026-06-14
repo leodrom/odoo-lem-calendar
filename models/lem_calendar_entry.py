@@ -40,9 +40,9 @@ class LemCalendarEntry(models.Model):
     color = fields.Integer(compute='_compute_color', store=True)
 
     entry_type = fields.Selection([
-        ('event', 'Event'),
-        ('lead', 'Opportunity'),
-        ('manual', 'Manual'),
+        ('event', 'Подія'),
+        ('lead', 'Угода'),
+        ('manual', 'Невизначений'),
     ], compute='_compute_entry_type', store=True, string="Об'єкт")
 
     status_badge = fields.Html(compute='_compute_status_badge', store=False, sanitize=False, string=' ')
