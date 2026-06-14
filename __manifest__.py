@@ -13,10 +13,10 @@
     'assets': {
         'web.assets_backend': [
             'lem_event_calendar/static/src/css/calendar.css',
-            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_model.js',
-            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_common_renderer.js',
-            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_renderer.js',
-            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_view.js',
+            'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_model.js',
+            'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_common_renderer.js',
+            'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_renderer.js',
+            'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_view.js',
         ],
     },
     'application': True,
