@@ -193,12 +193,14 @@ class LemCalendarEntry(models.Model):
 
     def write(self, vals):
         old_state = {}
-        if 'res_id' in vals or 'res_model' in vals:
+        track_fields = 'res_id' in vals or 'res_model' in vals or 'user_id' in vals
+        if track_fields:
             for rec in self:
                 old_state[rec.id] = {
                     'res_model': rec.res_model,
                     'res_id': rec.res_id,
                     'name': rec.name,
+                    'user_id': rec.user_id,
                 }
 
         result = super().write(vals)
@@ -207,6 +209,19 @@ class LemCalendarEntry(models.Model):
             old = old_state.get(rec.id)
             if not old:
                 continue
+
+            # Log user_id change
+            old_user = old['user_id']
+            if rec.user_id != old_user:
+                old_label = old_user.name if old_user else '—'
+                new_label = rec.user_id.name if rec.user_id else '—'
+                rec.message_post(
+                    body=Markup('Відповідальний змінено: {} → <b>{}</b>.').format(old_label, new_label),
+                    message_type='comment',
+                    subtype_xmlid='mail.mt_note',
+                )
+
+            # Log object link change
             if not rec.res_model or not rec.res_id:
                 continue
             if rec.res_model == old['res_model'] and rec.res_id == old['res_id']:
