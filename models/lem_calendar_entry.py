@@ -5,6 +5,11 @@ _MODEL_TYPE = {
     'crm.lead': 'lead',
 }
 
+_MODEL_LABEL = {
+    'event.event': 'Подія',
+    'crm.lead': 'Нагода',
+}
+
 
 class LemCalendarEntry(models.Model):
     _name = 'lem.calendar.entry'
@@ -122,6 +127,83 @@ class LemCalendarEntry(models.Model):
     def _compute_entry_type(self):
         for rec in self:
             rec.entry_type = _MODEL_TYPE.get(rec.res_model, 'manual')
+
+    @api.onchange('res_id')
+    def _onchange_res_id(self):
+        if self.res_model and self.res_id:
+            obj = self.env[self.res_model].browse(self.res_id)
+            if obj.exists():
+                self.name = obj.display_name
+
+    def _get_linked_obj(self, res_model, res_id):
+        if not res_model or not res_id:
+            return None
+        obj = self.env[res_model].browse(res_id)
+        return obj if obj.exists() else None
+
+    def _post_link_log(self, rec, obj, old_name):
+        obj_label = _MODEL_LABEL.get(rec.res_model, rec.res_model)
+        obj_url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
+        obj_link = f'<a href="{obj_url}">{obj.display_name}</a>'
+        cal_url = f'/web#model=lem.calendar.entry&id={rec.id}&view_type=form'
+        cal_link = f'<a href="{cal_url}">{rec.display_name}</a>'
+
+        # Log on calendar entry
+        note = f'Прив\'язано {obj_label}: {obj_link}.'
+        if old_name and old_name != obj.display_name:
+            note += f' Назву змінено з «{old_name}» на «{obj.display_name}».'
+        rec.message_post(body=note, message_type='comment', subtype_xmlid='mail.mt_note')
+
+        # Log on linked object (only if it has chatter)
+        if hasattr(obj, 'message_post'):
+            obj.message_post(
+                body=f'Прив\'язано до запису Календаря подій: {cal_link}.',
+                message_type='comment',
+                subtype_xmlid='mail.mt_note',
+            )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for rec in records:
+            if rec.res_model and rec.res_id:
+                obj = self._get_linked_obj(rec.res_model, rec.res_id)
+                if obj:
+                    old_name = rec.name
+                    if rec.name != obj.display_name:
+                        super(LemCalendarEntry, rec).write({'name': obj.display_name})
+                    self._post_link_log(rec, obj, old_name)
+        return records
+
+    def write(self, vals):
+        old_state = {}
+        if 'res_id' in vals or 'res_model' in vals:
+            for rec in self:
+                old_state[rec.id] = {
+                    'res_model': rec.res_model,
+                    'res_id': rec.res_id,
+                    'name': rec.name,
+                }
+
+        result = super().write(vals)
+
+        for rec in self:
+            old = old_state.get(rec.id)
+            if not old:
+                continue
+            if not rec.res_model or not rec.res_id:
+                continue
+            if rec.res_model == old['res_model'] and rec.res_id == old['res_id']:
+                continue
+            obj = self._get_linked_obj(rec.res_model, rec.res_id)
+            if not obj:
+                continue
+            old_name = old['name']
+            if rec.name != obj.display_name:
+                super(LemCalendarEntry, rec).write({'name': obj.display_name})
+            self._post_link_log(rec, obj, old_name)
+
+        return result
 
     def action_open_linked_object(self):
         self.ensure_one()
