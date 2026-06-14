@@ -1,7 +1,7 @@
 import { registry } from "@web/core/registry";
 import { calendarView } from "@web/views/calendar/calendar_view";
-import { LemCalendarRenderer } from "./lem_event_calendar_renderer";
-import { LemCalendarModel } from "./lem_event_calendar_model";
+import { LemCalendarRenderer } from "./lem_calendar_renderer";
+import { LemCalendarModel } from "./lem_calendar_model";
 
 export const lemCalendarView = {
     ...calendarView,
