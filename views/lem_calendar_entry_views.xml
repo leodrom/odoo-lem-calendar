@@ -30,6 +30,7 @@
                 <field name="date_end"/>
                 <field name="location_id"/>
                 <field name="user_id"/>
+                <field name="linked_object_name" string="Об'єкт" optional="show"/>
                 <field name="entry_type" widget="badge"
                        decoration-success="entry_type == 'event'"
                        decoration-info="entry_type == 'lead'"
