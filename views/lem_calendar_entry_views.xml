@@ -95,6 +95,36 @@
         </field>
     </record>
 
+    <record id="lem_calendar_entry_view_search" model="ir.ui.view">
+        <field name="name">lem.calendar.entry.search</field>
+        <field name="model">lem.calendar.entry</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Назва"/>
+                <field name="location_id" string="Локація"/>
+                <separator/>
+                <filter name="confirmed"   string="Погоджено"            domain="[('status','=','confirmed')]"/>
+                <filter name="negotiation" string="В процесі погодження" domain="[('status','=','negotiation')]"/>
+                <filter name="reserve"     string="Резерв"               domain="[('status','=','reserve')]"/>
+                <filter name="waiting"     string="Очікуємо відповідь"   domain="[('status','=','waiting')]"/>
+                <filter name="cancelled"   string="Скасовано"            domain="[('status','=','cancelled')]"/>
+                <separator/>
+                <filter name="date_today" string="Сьогодні" domain="[('date_start','&gt;=', datetime.datetime.now().replace(hour=0,minute=0,second=0).strftime('%Y-%m-%d %H:%M:%S')),('date_start','&lt;=', datetime.datetime.now().replace(hour=23,minute=59,second=59).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+                <filter name="date_start" string="Дата початку" date="date_start"/>
+                <separator/>
+                <filter name="type_event"  string="Подія"                domain="[('entry_type','=','event')]"/>
+                <filter name="type_lead"   string="Нагода"               domain="[('entry_type','=','lead')]"/>
+                <filter name="type_manual" string="Невизначений"         domain="[('entry_type','=','manual')]"/>
+                <group expand="0" string="Групувати за">
+                    <filter name="group_status"   string="Статус"    context="{'group_by': 'status'}"/>
+                    <filter name="group_location" string="Локація"   context="{'group_by': 'location_id'}"/>
+                    <filter name="group_type"     string="Тип"       context="{'group_by': 'entry_type'}"/>
+                    <filter name="group_user"     string="Відповідальний" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="lem_calendar_entry_action" model="ir.actions.act_window">
         <field name="name">LEM Calendar</field>
         <field name="res_model">lem.calendar.entry</field>
