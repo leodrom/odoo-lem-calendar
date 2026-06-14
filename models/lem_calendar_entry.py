@@ -16,7 +16,7 @@ _MODEL_LABEL = {
 
 
 class LemCalendarEntry(models.Model):
-    _name = 'lem.calendar.entry'
+    _name = 'lem.event.calendar.entry'
     _description = 'LEM Calendar Entry'
     _order = 'date_start desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -24,7 +24,7 @@ class LemCalendarEntry(models.Model):
     name = fields.Char(required=True, tracking=True)
     date_start = fields.Datetime(required=True, string='Start', tracking=True)
     date_end = fields.Datetime(string='End', tracking=True)
-    location_id = fields.Many2one('lem.location', string='Location', tracking=True, index=True)
+    location_id = fields.Many2one('lem.event.calendar.location', string='Location', tracking=True, index=True)
 
     # Generic relation
     res_model = fields.Selection(
@@ -173,7 +173,7 @@ class LemCalendarEntry(models.Model):
         obj_label = _MODEL_LABEL.get(rec.res_model, rec.res_model)
         obj_url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
         obj_link = Markup('<a href="{}">{}</a>').format(obj_url, obj.display_name)
-        cal_url = f'/web#model=lem.calendar.entry&id={rec.id}&view_type=form'
+        cal_url = f'/web#model=lem.event.calendar.entry&id={rec.id}&view_type=form'
         cal_link = Markup('<a href="{}">{}</a>').format(cal_url, rec.display_name)
 
         # Log on calendar entry

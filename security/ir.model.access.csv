@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_lem_location_user,lem.location users,model_lem_location,base.group_user,1,1,1,1
-access_lem_event_calendar_entry_user,lem.calendar.entry users,model_lem_calendar_entry,base.group_user,1,1,1,1
+access_lem_event_calendar_location_user,lem.event.calendar.location users,model_lem_event_calendar_location,base.group_user,1,1,1,1
+access_lem_event_calendar_entry_user,lem.event.calendar.entry users,model_lem_event_calendar_entry,base.group_user,1,1,1,1

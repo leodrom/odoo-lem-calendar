@@ -7,9 +7,9 @@ _COLOR_HEX = {
 }
 
 
-class LemLocation(models.Model):
-    _name = 'lem.location'
-    _description = 'LEM Location'
+class LemEventCalendarLocation(models.Model):
+    _name = 'lem.event.calendar.location'
+    _description = 'LEM Event Calendar Location'
     _order = 'name'
 
     name = fields.Char(required=True)
@@ -21,7 +21,7 @@ class LemLocation(models.Model):
     notes = fields.Text()
     active = fields.Boolean(default=True)
 
-    entry_ids = fields.One2many('lem.calendar.entry', 'location_id', string='Calendar Entries')
+    entry_ids = fields.One2many('lem.event.calendar.entry', 'location_id', string='Calendar Entries')
     entry_count = fields.Integer(compute='_compute_entry_count', string='Entries')
 
     @api.depends('color')
@@ -35,7 +35,7 @@ class LemLocation(models.Model):
             )
 
     def _compute_entry_count(self):
-        data = self.env['lem.calendar.entry'].read_group(
+        data = self.env['lem.event.calendar.entry'].read_group(
             [('location_id', 'in', self.ids)],
             ['location_id'],
             ['location_id'],
@@ -48,8 +48,8 @@ class LemLocation(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': self.name,
-            'res_model': 'lem.calendar.entry',
-            'view_mode': 'calendar,list,form',
+            'res_model': 'lem.event.calendar.entry',
+            'view_mode': 'lem_event_calendar,list,form',
             'domain': [('location_id', '=', self.id)],
             'context': {'default_location_id': self.id},
         }
