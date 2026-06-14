@@ -24,7 +24,7 @@
         <field name="name">lem.calendar.entry.list</field>
         <field name="model">lem.calendar.entry</field>
         <field name="arch" type="xml">
-            <list string="Calendar Entries" default_order="date_start desc">
+            <list string="Події" default_order="date_start desc" create_label="Нова">
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
