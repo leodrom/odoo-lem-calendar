@@ -108,7 +108,6 @@
                 <filter name="waiting"     string="Очікуємо відповідь"   domain="[('status','=','waiting')]"/>
                 <filter name="cancelled"   string="Скасовано"            domain="[('status','=','cancelled')]"/>
                 <separator/>
-                <filter name="date_today" string="Сьогодні" domain="[('date_start','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')),('date_start','&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
                 <filter name="date_start" string="Дата початку" date="date_start"/>
                 <separator/>
                 <filter name="type_event"  string="Подія"                domain="[('entry_type','=','event')]"/>
