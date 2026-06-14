@@ -25,20 +25,20 @@ class LemCalendarEntry(models.Model):
     # Generic relation
     res_model = fields.Selection(
         selection='_get_reference_models',
-        string='Object Type',
+        string='Тип об\'єкту',
         index=True,
         tracking=True,
     )
     res_id = fields.Many2oneReference(
         model_field='res_model',
-        string='Object',
+        string='Об\'єкт',
         index=True,
         # Many2oneReference has no DB FK, so ondelete is not applicable;
         # stale references are handled gracefully in _compute_linked_object_name.
     )
 
     linked_object_name = fields.Html(
-        string='Object',
+        string='Об\'єкт',
         compute='_compute_linked_object_name',
         store=False,
         sanitize=False,
@@ -47,22 +47,22 @@ class LemCalendarEntry(models.Model):
     color = fields.Integer(compute='_compute_color', store=True)
 
     entry_type = fields.Selection([
-        ('event', 'Event'),
-        ('lead', 'Opportunity'),
-        ('manual', 'Manual'),
-    ], compute='_compute_entry_type', store=True, string='Type')
+        ('event', 'Подія'),
+        ('lead', 'Нагода'),
+        ('manual', 'Невизначений'),
+    ], compute='_compute_entry_type', store=True, string='Об\'єкт')
 
     status_badge = fields.Html(compute='_compute_status_badge', store=False, sanitize=False, string=' ')
 
     status = fields.Selection([
-        ('negotiation', 'Negotiating'),
-        ('confirmed', 'Confirmed'),
-        ('reserve', 'Reserved'),
-        ('waiting', 'Waiting for reply'),
-        ('cancelled', 'Cancelled'),
-    ], string='Status', tracking=True, index=True)
+        ('negotiation', 'В процесі погодження'),
+        ('confirmed', 'Погоджено'),
+        ('reserve', 'Резерв'),
+        ('waiting', 'Очікуємо відповідь'),
+        ('cancelled', 'Скасовано'),
+    ], string='Статус', tracking=True, index=True)
 
-    user_id = fields.Many2one('res.users', string='Responsible', index=True)
+    user_id = fields.Many2one('res.users', string='Відповідальний', index=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
 

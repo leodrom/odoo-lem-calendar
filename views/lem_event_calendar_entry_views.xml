@@ -48,7 +48,7 @@
         <field name="name">lem.event.calendar.entry.form</field>
         <field name="model">lem.event.calendar.entry</field>
         <field name="arch" type="xml">
-            <form string="Calendar Entry">
+            <form string="Запис Календаря">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_linked_object"
@@ -67,12 +67,12 @@
                         <h1><field name="name" placeholder="Entry title..."/></h1>
                     </div>
                     <group>
-                        <group string="Schedule">
+                        <group string="Розклад">
                             <field name="date_start"/>
                             <field name="date_end"/>
                             <field name="location_id"/>
                         </group>
-                        <group string="Details">
+                        <group string="Деталі">
                             <field name="entry_type" widget="badge"/>
                             <field name="user_id"/>
                             <field name="status" widget="radio" class="o_status_radio"/>

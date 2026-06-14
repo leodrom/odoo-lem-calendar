@@ -15,7 +15,7 @@ class LemEventCalendarLocation(models.Model):
     name = fields.Char(required=True)
     color = fields.Integer(default=0)
     color_html = fields.Char()
-    color_display = fields.Html(compute='_compute_color_display', store=False, sanitize=False, string='Color')
+    color_display = fields.Html(compute='_compute_color_display', store=False, sanitize=False, string='Колір')
     address = fields.Char()
     google_maps_url = fields.Char(string='Google Maps URL')
     notes = fields.Text()
