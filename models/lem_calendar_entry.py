@@ -61,7 +61,7 @@ class LemCalendarEntry(models.Model):
         ('cancelled', 'Скасовано'),
     ], string='Статус', tracking=True, index=True)
 
-    user_id = fields.Many2one('res.users', string='Відповідальний', tracking=True, index=True)
+    user_id = fields.Many2one('res.users', string='Відповідальний', index=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
 
