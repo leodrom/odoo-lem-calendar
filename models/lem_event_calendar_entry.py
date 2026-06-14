@@ -9,10 +9,6 @@ _MODEL_TYPE = {
     'crm.lead': 'lead',
 }
 
-_MODEL_LABEL = {
-    'event.event': 'Подія',
-    'crm.lead': 'Нагода',
-}
 
 
 class LemCalendarEntry(models.Model):
@@ -51,22 +47,22 @@ class LemCalendarEntry(models.Model):
     color = fields.Integer(compute='_compute_color', store=True)
 
     entry_type = fields.Selection([
-        ('event', 'Подія'),
-        ('lead', 'Нагода'),
-        ('manual', 'Невизначений'),
-    ], compute='_compute_entry_type', store=True, string="Об'єкт")
+        ('event', 'Event'),
+        ('lead', 'Opportunity'),
+        ('manual', 'Manual'),
+    ], compute='_compute_entry_type', store=True, string='Type')
 
     status_badge = fields.Html(compute='_compute_status_badge', store=False, sanitize=False, string=' ')
 
     status = fields.Selection([
-        ('negotiation', 'В процесі погодження'),
-        ('confirmed', 'Погоджено'),
-        ('reserve', 'Резерв'),
-        ('waiting', 'Очікуємо відповідь'),
-        ('cancelled', 'Скасовано'),
-    ], string='Статус', tracking=True, index=True)
+        ('negotiation', 'Negotiating'),
+        ('confirmed', 'Confirmed'),
+        ('reserve', 'Reserved'),
+        ('waiting', 'Waiting for reply'),
+        ('cancelled', 'Cancelled'),
+    ], string='Status', tracking=True, index=True)
 
-    user_id = fields.Many2one('res.users', string='Відповідальний', index=True)
+    user_id = fields.Many2one('res.users', string='Responsible', index=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
 
@@ -84,19 +80,28 @@ class LemCalendarEntry(models.Model):
             prefix = f'{emoji} ' if emoji else ''
             rec.display_name = f'{prefix}{rec.name}'
 
-    _STATUS_STYLE = {
-        'negotiation': ('#f0ad4e', 'В процесі'),
-        'confirmed':   ('#28a745', 'Погоджено'),
-        'reserve':     ('#17a2b8', 'Резерв'),
-        'waiting':     ('#fd7e14', 'Очікуємо'),
-        'cancelled':   ('#dc3545', 'Скасовано'),
+    _STATUS_COLOR = {
+        'negotiation': '#f0ad4e',
+        'confirmed':   '#28a745',
+        'reserve':     '#17a2b8',
+        'waiting':     '#fd7e14',
+        'cancelled':   '#dc3545',
+    }
+
+    _STATUS_BADGE_LABEL = {
+        'negotiation': 'В процесі',
+        'confirmed':   'Погоджено',
+        'reserve':     'Резерв',
+        'waiting':     'Очікуємо',
+        'cancelled':   'Скасовано',
     }
 
     @api.depends('status')
     def _compute_status_badge(self):
         for rec in self:
-            if rec.status and rec.status in self._STATUS_STYLE:
-                color, label = self._STATUS_STYLE[rec.status]
+            color = self._STATUS_COLOR.get(rec.status)
+            label = self._STATUS_BADGE_LABEL.get(rec.status)
+            if color and label:
                 rec.status_badge = (
                     f'<span style="display:inline-block;padding:1px 6px;border-radius:3px;'
                     f'font-size:11px;line-height:1.4;background:{color};color:#fff;'
@@ -107,8 +112,8 @@ class LemCalendarEntry(models.Model):
 
     def _get_reference_models(self):
         return [
-            ('event.event', 'Подія'),
-            ('crm.lead', 'Нагода'),
+            ('event.event', _('Event')),
+            ('crm.lead', _('Opportunity')),
         ]
 
     @api.depends('res_model', 'res_id')
@@ -170,22 +175,23 @@ class LemCalendarEntry(models.Model):
             super(LemCalendarEntry, rec).write(vals)
 
     def _post_link_log(self, rec, obj, old_name):
-        obj_label = _MODEL_LABEL.get(rec.res_model, rec.res_model)
+        obj_labels = {'event.event': _('Event'), 'crm.lead': _('Opportunity')}
+        obj_label = obj_labels.get(rec.res_model, rec.res_model)
         obj_url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
         obj_link = Markup('<a href="{}">{}</a>').format(obj_url, obj.display_name)
         cal_url = f'/web#model=lem.event.calendar.entry&id={rec.id}&view_type=form'
         cal_link = Markup('<a href="{}">{}</a>').format(cal_url, rec.display_name)
 
         # Log on calendar entry
-        note = Markup(_('Прив\'язано {}: {}.')).format(obj_label, obj_link)
+        note = Markup(_('Linked {}: {}.')).format(obj_label, obj_link)
         if old_name and old_name != obj.display_name:
-            note += Markup(_(' Назву змінено з «{}» на «{}».')).format(old_name, obj_link)
+            note += Markup(_(' Name changed from «{}» to «{}».')).format(old_name, obj_link)
         rec.message_post(body=note, message_type='comment', subtype_xmlid='mail.mt_note')
 
         # Log on linked object (only if it has chatter)
         if hasattr(obj, 'message_post'):
             obj.message_post(
-                body=Markup(_('Прив\'язано до запису Календаря подій: {}.')).format(cal_link),
+                body=Markup(_('Linked to Calendar Event record: {}.')).format(cal_link),
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
             )
@@ -227,7 +233,7 @@ class LemCalendarEntry(models.Model):
                 old_label = old_user.name if old_user else '—'
                 new_label = rec.user_id.name if rec.user_id else '—'
                 rec.message_post(
-                    body=Markup(_('Відповідальний змінено: {} → <b>{}</b>.')).format(old_label, new_label),
+                    body=Markup(_('Responsible changed: {} → <b>{}</b>.')).format(old_label, new_label),
                     message_type='comment',
                     subtype_xmlid='mail.mt_note',
                 )
