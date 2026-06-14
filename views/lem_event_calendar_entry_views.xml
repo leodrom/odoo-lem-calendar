@@ -113,7 +113,7 @@
                 <filter name="type_event"  string="Подія"                domain="[('entry_type','=','event')]"/>
                 <filter name="type_lead"   string="Нагода"               domain="[('entry_type','=','lead')]"/>
                 <filter name="type_manual" string="Невизначений"         domain="[('entry_type','=','manual')]"/>
-                <group expand="0" string="Групувати за">
+                <group>
                     <filter name="group_status"   string="Статус"    context="{'group_by': 'status'}"/>
                     <filter name="group_location" string="Локація"   context="{'group_by': 'location_id'}"/>
                     <filter name="group_type"     string="Тип"       context="{'group_by': 'entry_type'}"/>
