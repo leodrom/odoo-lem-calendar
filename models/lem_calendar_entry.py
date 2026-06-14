@@ -1,3 +1,4 @@
+from markupsafe import Markup
 from odoo import models, fields, api
 
 _MODEL_TYPE = {
@@ -149,15 +150,15 @@ class LemCalendarEntry(models.Model):
         cal_link = f'<a href="{cal_url}">{rec.display_name}</a>'
 
         # Log on calendar entry
-        note = f'Прив\'язано {obj_label}: {obj_link}.'
+        note = Markup('Прив\'язано {}: {}.').format(obj_label, Markup(obj_link))
         if old_name and old_name != obj.display_name:
-            note += f' Назву змінено з «{old_name}» на «{obj.display_name}».'
+            note += Markup(' Назву змінено з «{}» на «{}».').format(old_name, obj.display_name)
         rec.message_post(body=note, message_type='comment', subtype_xmlid='mail.mt_note')
 
         # Log on linked object (only if it has chatter)
         if hasattr(obj, 'message_post'):
             obj.message_post(
-                body=f'Прив\'язано до запису Календаря подій: {cal_link}.',
+                body=Markup('Прив\'язано до запису Календаря подій: {}.').format(Markup(cal_link)),
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
             )
