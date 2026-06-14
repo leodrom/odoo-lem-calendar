@@ -83,7 +83,7 @@
                             <field name="res_model" string="Тип об'єкту"
                                    help="Оберіть тип об'єкта, з яким пов'язаний цей запис. Наприклад: Подія — для подій з модуля Events, Угода — для CRM-угод. Залиште порожнім для ручного запису."/>
                             <field name="res_id" string="Об'єкт" invisible="not res_model"
-                                   domain="[('type', '=', 'opportunity')] if res_model == 'crm.lead' else []"
+                                   domain="[] if res_model != 'crm.lead' else [('type', 'in', ['lead', 'opportunity'])]"
                                    help="Оберіть конкретний запис обраного типу. Поле доступне після вибору типу об'єкта."/>
                         </group>
                         <group/>
@@ -109,7 +109,7 @@
                 <filter name="waiting"     string="Очікуємо відповідь"   domain="[('status','=','waiting')]"/>
                 <filter name="cancelled"   string="Скасовано"            domain="[('status','=','cancelled')]"/>
                 <separator/>
-                <filter name="date_today" string="Сьогодні" domain="[('date_start','&gt;=', datetime.datetime.now().replace(hour=0,minute=0,second=0).strftime('%Y-%m-%d %H:%M:%S')),('date_start','&lt;=', datetime.datetime.now().replace(hour=23,minute=59,second=59).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+                <filter name="date_today" string="Сьогодні" domain="[('date_start','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')),('date_start','&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
                 <filter name="date_start" string="Дата початку" date="date_start"/>
                 <separator/>
                 <filter name="type_event"  string="Подія"                domain="[('entry_type','=','event')]"/>

@@ -27,8 +27,7 @@
 lem_calendar/
 ├── models/
 │   ├── lem_calendar_entry.py   # Основна модель запису календаря
-│   ├── lem_location.py         # Модель локацій
-│   └── event_event.py          # Розширення event.event
+│   └── lem_location.py         # Модель локацій
 ├── views/
 │   ├── lem_calendar_entry_views.xml  # Calendar / List / Form views
 │   ├── lem_location_views.xml        # Views для локацій

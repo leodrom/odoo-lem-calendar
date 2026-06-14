@@ -1,5 +1,8 @@
-from markupsafe import Markup
-from odoo import models, fields, api
+import logging
+from markupsafe import Markup, escape
+from odoo import models, fields, api, _
+
+_logger = logging.getLogger(__name__)
 
 _MODEL_TYPE = {
     'event.event': 'event',
@@ -34,6 +37,8 @@ class LemCalendarEntry(models.Model):
         model_field='res_model',
         string='Object',
         index=True,
+        # Many2oneReference has no DB FK, so ondelete is not applicable;
+        # stale references are handled gracefully in _compute_linked_object_name.
     )
 
     linked_object_name = fields.Html(
@@ -112,10 +117,16 @@ class LemCalendarEntry(models.Model):
             if rec.res_model and rec.res_id:
                 try:
                     obj = self.env[rec.res_model].browse(rec.res_id)
-                    name = obj.display_name
+                    if not obj.exists():
+                        rec.linked_object_name = False
+                        continue
                     url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
-                    rec.linked_object_name = f'<a href="{url}" style="white-space:normal;word-break:break-word;overflow-wrap:break-word;display:block;">{name}</a>'
+                    rec.linked_object_name = Markup(
+                        '<a href="{}" style="white-space:normal;word-break:break-word;'
+                        'overflow-wrap:break-word;display:block;">{}</a>'
+                    ).format(url, obj.display_name)
                 except Exception:
+                    _logger.exception("Error computing linked_object_name for %s id=%s", rec.res_model, rec.res_id)
                     rec.linked_object_name = False
             else:
                 rec.linked_object_name = False
@@ -161,20 +172,20 @@ class LemCalendarEntry(models.Model):
     def _post_link_log(self, rec, obj, old_name):
         obj_label = _MODEL_LABEL.get(rec.res_model, rec.res_model)
         obj_url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
-        obj_link = f'<a href="{obj_url}">{obj.display_name}</a>'
+        obj_link = Markup('<a href="{}">{}</a>').format(obj_url, obj.display_name)
         cal_url = f'/web#model=lem.calendar.entry&id={rec.id}&view_type=form'
-        cal_link = f'<a href="{cal_url}">{rec.display_name}</a>'
+        cal_link = Markup('<a href="{}">{}</a>').format(cal_url, rec.display_name)
 
         # Log on calendar entry
-        note = Markup('Прив\'язано {}: {}.').format(obj_label, Markup(obj_link))
+        note = Markup(_('Прив\'язано {}: {}.')).format(obj_label, obj_link)
         if old_name and old_name != obj.display_name:
-            note += Markup(' Назву змінено з «{}» на «{}».').format(old_name, Markup(obj_link))
+            note += Markup(_(' Назву змінено з «{}» на «{}».')).format(old_name, obj_link)
         rec.message_post(body=note, message_type='comment', subtype_xmlid='mail.mt_note')
 
         # Log on linked object (only if it has chatter)
         if hasattr(obj, 'message_post'):
             obj.message_post(
-                body=Markup('Прив\'язано до запису Календаря подій: {}.').format(Markup(cal_link)),
+                body=Markup(_('Прив\'язано до запису Календаря подій: {}.')).format(cal_link),
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
             )
@@ -216,7 +227,7 @@ class LemCalendarEntry(models.Model):
                 old_label = old_user.name if old_user else '—'
                 new_label = rec.user_id.name if rec.user_id else '—'
                 rec.message_post(
-                    body=Markup('Відповідальний змінено: {} → <b>{}</b>.').format(old_label, new_label),
+                    body=Markup(_('Відповідальний змінено: {} → <b>{}</b>.')).format(old_label, new_label),
                     message_type='comment',
                     subtype_xmlid='mail.mt_note',
                 )
