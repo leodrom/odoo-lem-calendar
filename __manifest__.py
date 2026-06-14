@@ -7,16 +7,16 @@
     'data': [
         'security/ir.model.access.csv',
         'views/lem_location_views.xml',
-        'views/lem_calendar_entry_views.xml',
+        'views/lem_event_calendar_entry_views.xml',
         'views/menus.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'lem_calendar/static/src/css/calendar.css',
-            'lem_calendar/static/src/views/lem_calendar/lem_calendar_model.js',
-            'lem_calendar/static/src/views/lem_calendar/lem_calendar_common_renderer.js',
-            'lem_calendar/static/src/views/lem_calendar/lem_calendar_renderer.js',
-            'lem_calendar/static/src/views/lem_calendar/lem_calendar_view.js',
+            'lem_event_calendar/static/src/css/calendar.css',
+            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_model.js',
+            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_common_renderer.js',
+            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_renderer.js',
+            'lem_event_calendar/static/src/views/lem_calendar/lem_calendar_view.js',
         ],
     },
     'application': True,

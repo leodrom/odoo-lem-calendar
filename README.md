@@ -24,14 +24,14 @@
 ## Структура модуля
 
 ```
-lem_calendar/
+lem_event_calendar/
 ├── models/
 │   ├── lem_calendar_entry.py   # Основна модель запису календаря
 │   └── lem_location.py         # Модель локацій
 ├── views/
-│   ├── lem_calendar_entry_views.xml  # Calendar / List / Form views
-│   ├── lem_location_views.xml        # Views для локацій
-│   └── menus.xml                     # Меню
+│   ├── lem_event_calendar_entry_views.xml  # Calendar / List / Form views
+│   ├── lem_location_views.xml              # Views для локацій
+│   └── menus.xml                           # Меню
 ├── static/
 │   ├── description/icon.png    # Іконка модуля
 │   └── src/css/calendar.css    # Стилі (radio-кнопки статусів, popover)
