@@ -43,7 +43,7 @@ class LemCalendarEntry(models.Model):
         ('event', 'Event'),
         ('lead', 'Opportunity'),
         ('manual', 'Manual'),
-    ], compute='_compute_entry_type', store=True, string='Type')
+    ], compute='_compute_entry_type', store=True, string="Об'єкт")
 
     status_badge = fields.Html(compute='_compute_status_badge', store=False, sanitize=False, string=' ')
 
