@@ -47,6 +47,11 @@
     align-items: center;
 }
 
+/* Hide section-level checkboxes (select-all) in filter sidebar */
+.o_calendar_filter_items_checkall .form-check-input {
+    display: none !important;
+}
+
 .o_calendar_popover .o_field_widget,
 .o_calendar_popover .o_field_html,
 .o_calendar_popover .o_field_html a,
