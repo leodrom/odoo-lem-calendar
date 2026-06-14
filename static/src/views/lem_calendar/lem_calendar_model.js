@@ -9,9 +9,9 @@ const STATUS_COLOR = {
 };
 
 const ENTRY_TYPE_OPTIONS = [
+    { value: "manual", label: "Невизначений" },
     { value: "event",  label: "Подія" },
     { value: "lead",   label: "Нагода" },
-    { value: "manual", label: "Невизначений" },
 ];
 
 export class LemCalendarModel extends CalendarModel {
@@ -69,6 +69,9 @@ export class LemCalendarModel extends CalendarModel {
                 });
             }
         }
+
+        const order = ENTRY_TYPE_OPTIONS.map((o) => o.value);
+        section.filters.sort((a, b) => order.indexOf(a.value) - order.indexOf(b.value));
 
         return section;
     }
