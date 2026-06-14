@@ -5,7 +5,7 @@
         <field name="name">lem.event.calendar.entry.calendar</field>
         <field name="model">lem.event.calendar.entry</field>
         <field name="arch" type="xml">
-            <lem_event_calendar string="LEM Calendar"
+            <lem_event_calendar string="Календар"
                       date_start="date_start"
                       date_stop="date_end"
                       color="color"
@@ -126,7 +126,7 @@
     </record>
 
     <record id="lem_event_calendar_entry_action" model="ir.actions.act_window">
-        <field name="name">LEM Calendar</field>
+        <field name="name">Календар</field>
         <field name="res_model">lem.event.calendar.entry</field>
         <field name="view_mode">lem_event_calendar,list,form</field>
     </record>
