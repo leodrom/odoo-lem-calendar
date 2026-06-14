@@ -150,22 +150,32 @@ msgid "Cancelled"
 msgstr "Скасовано"
 
 #. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:115
+msgid "Event"
+msgstr "Подія"
+
+#. module: lem_event_calendar
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:116
+msgid "Opportunity"
+msgstr "Нагода"
+
+#. module: lem_event_calendar
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:186
 msgid "Linked {}: {}."
 msgstr "Прив'язано {}: {}."
 
 #. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:188
 msgid " Name changed from «{}» to «{}»."
 msgstr " Назву змінено з «{}» на «{}»."
 
 #. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:194
 msgid "Linked to Calendar Event record: {}."
 msgstr "Прив'язано до запису Календаря подій: {}."
 
 #. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:236
 msgid "Responsible changed: {} → <b>{}</b>."
 msgstr "Відповідальний змінено: {} → <b>{}</b>."
 
@@ -190,22 +200,12 @@ msgid "Locations"
 msgstr "Локації"
 
 #. module: lem_event_calendar
-#: model:ir.actions.act_window,name:lem_event_calendar.lem_event_calendar_entry_action
-msgid "Календар"
-msgstr "Календар"
-
-#. module: lem_event_calendar
 #: model:ir.actions.act_window,name:lem_event_calendar.lem_event_calendar_entry_action_list
 msgid "Events"
 msgstr "Події"
 
 #. module: lem_event_calendar
 #: model:ir.actions.act_window,name:lem_event_calendar.lem_event_calendar_location_action
-msgid "Locations"
-msgstr "Локації"
-
-#. module: lem_event_calendar
-#: model_terms:ir.ui.view,arch_db:lem_event_calendar.lem_event_calendar_entry_view_calendar
 msgid "Locations"
 msgstr "Локації"
 
