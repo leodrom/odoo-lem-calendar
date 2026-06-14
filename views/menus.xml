@@ -12,7 +12,7 @@
               sequence="10"/>
 
     <menuitem id="lem_calendar_menu_entries"
-              name="Записи"
+              name="Події"
               parent="lem_calendar_menu_root"
               action="lem_calendar_entry_action_list"
               sequence="20"/>

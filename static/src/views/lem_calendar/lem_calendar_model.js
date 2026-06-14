@@ -27,6 +27,14 @@ export class LemCalendarModel extends CalendarModel {
             const status = record.rawRecord.status;
             return { colorIndex: STATUS_COLOR[status] || "#aaaaaa" };
         }
+        if (filterInfo.fieldName === "entry_type") {
+            const ENTRY_TYPE_COLOR = {
+                event:  "#28a745",
+                lead:   "#17a2b8",
+                manual: "#aaaaaa",
+            };
+            return { colorIndex: ENTRY_TYPE_COLOR[record.rawRecord.entry_type] || "#aaaaaa" };
+        }
         return super.addFilterFields(record, filterInfo);
     }
 
