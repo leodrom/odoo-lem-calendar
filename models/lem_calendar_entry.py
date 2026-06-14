@@ -156,7 +156,7 @@ class LemCalendarEntry(models.Model):
         # Log on calendar entry
         note = Markup('Прив\'язано {}: {}.').format(obj_label, Markup(obj_link))
         if old_name and old_name != obj.display_name:
-            note += Markup(' Назву змінено з «{}» на «{}».').format(old_name, obj.display_name)
+            note += Markup(' Назву змінено з «{}» на «{}».').format(old_name, Markup(obj_link))
         rec.message_post(body=note, message_type='comment', subtype_xmlid='mail.mt_note')
 
         # Log on linked object (only if it has chatter)
