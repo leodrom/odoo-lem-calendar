@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lem_location_all,lem.location all users,model_lem_location,,1,1,1,1
+access_lem_calendar_entry_all,lem.calendar.entry all users,model_lem_calendar_entry,,1,1,1,1

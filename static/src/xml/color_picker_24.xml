@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="lem_calendar.ColorPicker24">
+        <div class="o_color_picker_24">
+            <t t-foreach="colors" t-as="color" t-key="color">
+                <span
+                    t-att-class="props.value &amp;&amp; props.value.toUpperCase() === color.toUpperCase() ? 'o_cp24_swatch o_cp24_selected' : 'o_cp24_swatch'"
+                    t-att-style="`background:${color}`"
+                    t-on-click="() => this.selectColor(color)"
+                />
+            </t>
+        </div>
+    </t>
+</templates>

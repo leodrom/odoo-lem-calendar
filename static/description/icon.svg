@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7B4FA6"/>
+      <stop offset="100%" style="stop-color:#4A2080"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9B6FBF"/>
+      <stop offset="100%" style="stop-color:#6B3F9F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100" height="100" rx="18" ry="18" fill="url(#bg)"/>
+
+  <!-- Calendar body -->
+  <rect x="12" y="22" width="76" height="66" rx="8" ry="8" fill="#ffffff" opacity="0.95"/>
+
+  <!-- Header bar -->
+  <rect x="12" y="22" width="76" height="24" rx="8" ry="8" fill="url(#header)"/>
+  <rect x="12" y="34" width="76" height="12" fill="url(#header)"/>
+
+  <!-- Calendar hooks -->
+  <rect x="28" y="15" width="6" height="14" rx="3" fill="#ffffff" opacity="0.9"/>
+  <rect x="66" y="15" width="6" height="14" rx="3" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Month label dots (header) -->
+  <text x="50" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">КАЛЕНДАР</text>
+
+  <!-- Grid dots - row 1 -->
+  <circle cx="26" cy="56" r="3" fill="#C9A8E0"/>
+  <circle cx="38" cy="56" r="3" fill="#C9A8E0"/>
+  <circle cx="50" cy="56" r="3" fill="#C9A8E0"/>
+  <circle cx="62" cy="56" r="3" fill="#C9A8E0"/>
+  <circle cx="74" cy="56" r="3" fill="#C9A8E0"/>
+
+  <!-- Grid dots - row 2 -->
+  <circle cx="26" cy="68" r="3" fill="#C9A8E0"/>
+  <circle cx="38" cy="68" r="3" fill="#C9A8E0"/>
+
+  <!-- Star / event highlight -->
+  <polygon points="62,61 64.5,68 72,68 66,72.5 68.5,79.5 62,75 55.5,79.5 58,72.5 52,68 59.5,68"
+           fill="#FFD700" opacity="0.95"/>
+
+  <!-- Row 3 dots -->
+  <circle cx="26" cy="80" r="3" fill="#C9A8E0"/>
+  <circle cx="38" cy="80" r="3" fill="#C9A8E0"/>
+</svg>

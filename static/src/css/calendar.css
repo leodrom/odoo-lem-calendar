@@ -1,0 +1,59 @@
+.o_color_picker_24 {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 228px;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.o_cp24_swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+    transition: border-color 0.1s;
+}
+
+.o_cp24_swatch:hover {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,0.4);
+}
+
+.o_cp24_selected {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,0.8) !important;
+}
+
+/* Status radio color dots — order matches model definition */
+.o_status_radio .o_radio_item:nth-child(1) label::before { background: #f0ad4e; } /* В процесі погодження */
+.o_status_radio .o_radio_item:nth-child(2) label::before { background: #28a745; } /* Погоджено */
+.o_status_radio .o_radio_item:nth-child(3) label::before { background: #17a2b8; } /* Резерв */
+.o_status_radio .o_radio_item:nth-child(4) label::before { background: #fd7e14; } /* Очікуємо відповідь */
+.o_status_radio .o_radio_item:nth-child(5) label::before { background: #dc3545; } /* Скасовано */
+
+.o_status_radio .o_radio_item label::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.o_status_radio .o_radio_item label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.o_calendar_popover .o_field_widget,
+.o_calendar_popover .o_field_html,
+.o_calendar_popover .o_field_html a,
+.o_calendar_popover td,
+.o_calendar_popover .o_cw_popover_fields_secondary {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
