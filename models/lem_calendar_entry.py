@@ -129,6 +129,10 @@ class LemCalendarEntry(models.Model):
         for rec in self:
             rec.entry_type = _MODEL_TYPE.get(rec.res_model, 'manual')
 
+    @api.onchange('res_model')
+    def _onchange_res_model(self):
+        self.res_id = False
+
     @api.onchange('res_id')
     def _onchange_res_id(self):
         if self.res_model and self.res_id:
