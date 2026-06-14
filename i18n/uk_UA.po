@@ -111,11 +111,13 @@ msgstr "Опис"
 
 #. module: lem_event_calendar
 #: model:ir.model.fields.selection,name:lem_event_calendar.selection__lem_event_calendar_entry__entry_type__event
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:115
 msgid "Event"
 msgstr "Подія"
 
 #. module: lem_event_calendar
 #: model:ir.model.fields.selection,name:lem_event_calendar.selection__lem_event_calendar_entry__entry_type__lead
+#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:116
 msgid "Opportunity"
 msgstr "Нагода"
 
@@ -148,16 +150,6 @@ msgstr "Очікуємо відповідь"
 #: model:ir.model.fields.selection,name:lem_event_calendar.selection__lem_event_calendar_entry__status__cancelled
 msgid "Cancelled"
 msgstr "Скасовано"
-
-#. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:115
-msgid "Event"
-msgstr "Подія"
-
-#. module: lem_event_calendar
-#: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:116
-msgid "Opportunity"
-msgstr "Нагода"
 
 #. module: lem_event_calendar
 #: code:addons/lem_event_calendar/models/lem_event_calendar_entry.py:186

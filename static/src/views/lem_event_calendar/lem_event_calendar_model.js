@@ -70,8 +70,12 @@ export class LemCalendarModel extends CalendarModel {
             }
         }
 
-        const order = ENTRY_TYPE_OPTIONS.map((o) => o.value);
-        section.filters.sort((a, b) => order.indexOf(a.value) - order.indexOf(b.value));
+        const labelOrder = ENTRY_TYPE_OPTIONS.map((o) => o.label);
+        section.filters.sort((a, b) => {
+            const ai = labelOrder.indexOf(a.label);
+            const bi = labelOrder.indexOf(b.label);
+            return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+        });
 
         return section;
     }
