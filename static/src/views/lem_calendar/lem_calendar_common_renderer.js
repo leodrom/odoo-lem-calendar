@@ -11,7 +11,8 @@ const STATUS_BORDER_COLOR = {
 export class LemCalendarCommonRenderer extends CalendarCommonRenderer {
     eventClassNames(info) {
         const classNames = super.eventClassNames(info);
-        const status = info.event.extendedProps?.record?.rawRecord?.status;
+        const record = this.props.model.records[info.event.id];
+        const status = record?.rawRecord?.status;
         if (status) {
             classNames.push(`o_lem_event_status_${status}`);
         }
@@ -20,7 +21,8 @@ export class LemCalendarCommonRenderer extends CalendarCommonRenderer {
 
     onEventDidMount(info) {
         super.onEventDidMount(info);
-        const status = info.event.extendedProps?.record?.rawRecord?.status;
+        const record = this.props.model.records[info.event.id];
+        const status = record?.rawRecord?.status;
         if (status && STATUS_BORDER_COLOR[status]) {
             info.el.style.borderLeft = `4px solid ${STATUS_BORDER_COLOR[status]}`;
             info.el.style.borderRadius = "3px";

@@ -94,7 +94,7 @@
     <record id="lem_calendar_entry_action" model="ir.actions.act_window">
         <field name="name">LEM Calendar</field>
         <field name="res_model">lem.calendar.entry</field>
-        <field name="view_mode">calendar,list,form</field>
+        <field name="view_mode">lem_calendar,list,form</field>
     </record>
 
     <record id="lem_calendar_entry_action_list" model="ir.actions.act_window">
