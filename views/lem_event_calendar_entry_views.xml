@@ -129,6 +129,7 @@
         <field name="name">Календар</field>
         <field name="res_model">lem.event.calendar.entry</field>
         <field name="view_mode">lem_event_calendar,list,form</field>
+        <field name="path">lem-event-calendar</field>
     </record>
 
     <record id="lem_event_calendar_entry_action_list" model="ir.actions.act_window">
