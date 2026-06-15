@@ -16,6 +16,7 @@
                 <field name="location_id" filters="1" string="Локація"/>
                 <field name="entry_type" filters="1" string="Об'єкт"/>
                 <field name="linked_object_name" string=" " invisible="not linked_object_name"/>
+                <field name="user_id" string="Відповідальний"/>
             </lem_event_calendar>
         </field>
     </record>
@@ -82,7 +83,8 @@
                         <group string="Пов'язаний об'єкт">
                             <field name="res_model" string="Тип об'єкту"
                                    help="Оберіть тип об'єкта, з яким пов'язаний цей запис. Наприклад: Подія — для подій з модуля Events, Угода — для CRM-угод. Залиште порожнім для ручного запису."/>
-                            <field name="res_id" string="Об'єкт" invisible="not res_model"
+                            <field name="lead_id" string="Нагода" invisible="res_model != 'crm.lead'"/>
+                            <field name="res_id" string="Об'єкт" invisible="not res_model or res_model == 'crm.lead'"
                                    help="Оберіть конкретний запис обраного типу. Поле доступне після вибору типу об'єкта."/>
                         </group>
                         <group/>

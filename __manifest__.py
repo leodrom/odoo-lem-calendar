@@ -18,7 +18,6 @@
 * **Chatter** — повний лог змін через mail.thread
     """,
     'author': 'LEM Station',
-    'website': 'https://lemstation.com',
     'depends': ['mail', 'event', 'crm'],
     'data': [
         'security/ir.model.access.csv',
@@ -29,7 +28,9 @@
     'assets': {
         'web.assets_backend': [
             'lem_event_calendar/static/src/css/calendar.css',
+            'lem_event_calendar/static/src/lem_object_link.js',
             'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_model.js',
+            'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_filter_section_patch.js',
             'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_common_renderer.js',
             'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_renderer.js',
             'lem_event_calendar/static/src/views/lem_event_calendar/lem_event_calendar_view.js',

@@ -3,6 +3,7 @@
 
     <menuitem id="lem_event_calendar_menu_root"
               name="Календар Подій"
+              web_icon="lem_event_calendar,static/description/icon.png"
               sequence="90"/>
 
     <menuitem id="lem_event_calendar_menu_calendar"

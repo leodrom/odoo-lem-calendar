@@ -8,6 +8,8 @@ const STATUS_COLOR = {
     cancelled:   "#dc3545",
 };
 
+const ENTRY_TYPE_ORDER = ["manual", "event", "lead"];
+
 const ENTRY_TYPE_OPTIONS = [
     { value: "manual", label: "Невизначений" },
     { value: "event",  label: "Подія" },
@@ -20,6 +22,20 @@ export class LemCalendarModel extends CalendarModel {
         if (this.meta.filtersInfo?.entry_type) {
             this.meta.filtersInfo.entry_type.label = "Об'єкт";
         }
+    }
+
+    get filterSections() {
+        const sections = super.filterSections;
+        for (const section of sections) {
+            if (section.fieldName === "entry_type") {
+                section.filters.sort((a, b) => {
+                    const ai = ENTRY_TYPE_ORDER.indexOf(a.value);
+                    const bi = ENTRY_TYPE_ORDER.indexOf(b.value);
+                    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+                });
+            }
+        }
+        return sections;
     }
 
     addFilterFields(record, filterInfo) {
@@ -47,13 +63,13 @@ export class LemCalendarModel extends CalendarModel {
 
         const previousFilters = previousSection ? previousSection.filters : [];
 
-        // Normalize labels for existing items
+        // Normalize labels
         for (const filter of section.filters) {
             const opt = ENTRY_TYPE_OPTIONS.find((o) => o.value === filter.value);
             if (opt) filter.label = opt.label;
         }
 
-        // Add missing options
+        // Add missing options (so all 3 always appear)
         for (const { value, label } of ENTRY_TYPE_OPTIONS) {
             if (!section.filters.find((f) => f.value === value)) {
                 const previousFilter = previousFilters.find((f) => f.type === "dynamic" && f.value === value);
@@ -69,13 +85,6 @@ export class LemCalendarModel extends CalendarModel {
                 });
             }
         }
-
-        const labelOrder = ENTRY_TYPE_OPTIONS.map((o) => o.label);
-        section.filters.sort((a, b) => {
-            const ai = labelOrder.indexOf(a.label);
-            const bi = labelOrder.indexOf(b.label);
-            return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
-        });
 
         return section;
     }

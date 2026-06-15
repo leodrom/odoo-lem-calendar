@@ -9,6 +9,11 @@ _MODEL_TYPE = {
     'crm.lead': 'lead',
 }
 
+_MODEL_PATH = {
+    'event.event': 'events',
+    'crm.lead': 'crm',
+}
+
 
 
 class LemCalendarEntry(models.Model):
@@ -35,6 +40,14 @@ class LemCalendarEntry(models.Model):
         index=True,
         # Many2oneReference has no DB FK, so ondelete is not applicable;
         # stale references are handled gracefully in _compute_linked_object_name.
+    )
+    lead_id = fields.Many2one(
+        'crm.lead',
+        string='Нагода',
+        domain=[('type', '=', 'opportunity')],
+        compute='_compute_lead_id',
+        inverse='_inverse_lead_id',
+        store=False,
     )
 
     linked_object_name = fields.Html(
@@ -125,11 +138,13 @@ class LemCalendarEntry(models.Model):
                     if not obj.exists():
                         rec.linked_object_name = False
                         continue
-                    url = f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
+                    path = _MODEL_PATH.get(rec.res_model)
+                    url = f'/odoo/{path}/{rec.res_id}' if path else f'/web#model={rec.res_model}&id={rec.res_id}&view_type=form'
                     rec.linked_object_name = Markup(
-                        '<a href="{}" style="white-space:normal;word-break:break-word;'
+                        '<a class="o_lem_object_link" href="{}" data-model="{}" data-id="{}"'
+                        ' style="white-space:normal;word-break:break-word;'
                         'overflow-wrap:break-word;display:block;">{}</a>'
-                    ).format(url, obj.display_name)
+                    ).format(url, rec.res_model, rec.res_id, obj.display_name)
                 except Exception:
                     _logger.exception("Error computing linked_object_name for %s id=%s", rec.res_model, rec.res_id)
                     rec.linked_object_name = False
@@ -146,9 +161,23 @@ class LemCalendarEntry(models.Model):
         for rec in self:
             rec.entry_type = _MODEL_TYPE.get(rec.res_model, 'manual')
 
+    @api.depends('res_model', 'res_id')
+    def _compute_lead_id(self):
+        for rec in self:
+            rec.lead_id = rec.res_id if rec.res_model == 'crm.lead' else False
+
+    def _inverse_lead_id(self):
+        for rec in self:
+            if rec.lead_id:
+                rec.res_model = 'crm.lead'
+                rec.res_id = rec.lead_id.id
+            elif rec.res_model == 'crm.lead':
+                rec.res_id = False
+
     @api.onchange('res_model')
     def _onchange_res_model(self):
         self.res_id = False
+        self.lead_id = False
 
     @api.onchange('res_id')
     def _onchange_res_id(self):
