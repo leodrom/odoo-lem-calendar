@@ -179,6 +179,13 @@ class LemCalendarEntry(models.Model):
         self.res_id = False
         self.lead_id = False
 
+    @api.onchange('lead_id')
+    def _onchange_lead_id(self):
+        if self.lead_id:
+            self.name = self.lead_id.display_name
+            if self.lead_id.user_id:
+                self.user_id = self.lead_id.user_id
+
     @api.onchange('res_id')
     def _onchange_res_id(self):
         if self.res_model and self.res_id:
