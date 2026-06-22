@@ -102,10 +102,16 @@
     font-size: 0.9em;
     color: #0d6efd;
     text-decoration: none;
+    outline: none;
 }
 
 .o_lem_notes_more:hover {
     text-decoration: underline;
+}
+
+.o_lem_notes_more:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 .o_calendar_popover .o_field_widget,
