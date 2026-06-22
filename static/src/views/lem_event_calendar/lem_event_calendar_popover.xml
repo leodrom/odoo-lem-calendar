@@ -7,7 +7,8 @@
         <t t-call="web.CalendarCommonPopover.body"/>
         <t t-if="notesInfo">
             <div class="o_lem_popover_notes border-top px-3 pt-2 pb-1">
-                <div class="o_lem_notes_content" t-out="notesInfo.html"/>
+                <div t-if="notesInfo.truncated" class="o_lem_notes_content" t-esc="notesInfo.html"/>
+                <div t-else="" class="o_lem_notes_content" t-out="notesInfo.html"/>
                 <a t-if="notesInfo.truncated"
                    href="#"
                    class="o_lem_notes_more"

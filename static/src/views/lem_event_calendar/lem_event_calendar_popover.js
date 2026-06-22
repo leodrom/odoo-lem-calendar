@@ -1,5 +1,6 @@
 import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
 import { useService } from "@web/core/utils/hooks";
+import { markup } from "@odoo/owl";
 
 const NOTES_LIMIT = 300;
 
@@ -25,13 +26,9 @@ export class LemCalendarPopover extends CalendarCommonPopover {
         const text = (tmp.textContent || tmp.innerText || "").trim();
         if (!text) return null;
         if (text.length <= NOTES_LIMIT) {
-            return { html: raw, truncated: false };
+            return { html: markup(raw), truncated: false };
         }
-        const snippet = text.slice(0, NOTES_LIMIT)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-        return { html: snippet, truncated: true };
+        return { html: text.slice(0, NOTES_LIMIT), truncated: true };
     }
 
     async onDuplicateEvent() {
