@@ -76,8 +76,13 @@ class LemCalendarEntry(models.Model):
     ], string='Статус', tracking=True, index=True)
 
     user_id = fields.Many2one('res.users', string='Відповідальний', index=True)
-    description = fields.Text()
+    description = fields.Html(sanitize=True, sanitize_style=True)
     active = fields.Boolean(default=True)
+
+    entry_role = fields.Selection([
+        ('main', 'Основна'),
+        ('prep', 'Підготовча'),
+    ], string='Роль', default='main', required=True, tracking=True, index=True)
 
     _STATUS_EMOJI = {
         'negotiation': '🟡',
@@ -90,8 +95,9 @@ class LemCalendarEntry(models.Model):
     def _compute_display_name(self):
         for rec in self:
             emoji = self._STATUS_EMOJI.get(rec.status, '')
-            prefix = f'{emoji} ' if emoji else ''
-            rec.display_name = f'{prefix}{rec.name}'
+            role_prefix = '⚙ ' if rec.entry_role == 'prep' else ''
+            status_prefix = f'{emoji} ' if emoji else ''
+            rec.display_name = f'{role_prefix}{status_prefix}{rec.name}'
 
     _STATUS_COLOR = {
         'negotiation': '#f0ad4e',
@@ -164,7 +170,7 @@ class LemCalendarEntry(models.Model):
     @api.depends('res_model', 'res_id')
     def _compute_lead_id(self):
         for rec in self:
-            rec.lead_id = rec.res_id if rec.res_model == 'crm.lead' else False
+            rec.lead_id = rec.res_id if (rec.res_model == 'crm.lead' and rec.res_id) else False
 
     def _inverse_lead_id(self):
         for rec in self:
@@ -232,8 +238,14 @@ class LemCalendarEntry(models.Model):
                 subtype_xmlid='mail.mt_note',
             )
 
+    def _normalize_vals(self, vals):
+        if vals.get('res_id') == 0:
+            vals['res_id'] = False
+        return vals
+
     @api.model_create_multi
     def create(self, vals_list):
+        vals_list = [self._normalize_vals(v) for v in vals_list]
         records = super().create(vals_list)
         for rec in records:
             if rec.res_model and rec.res_id:
@@ -245,6 +257,7 @@ class LemCalendarEntry(models.Model):
         return records
 
     def write(self, vals):
+        self._normalize_vals(vals)
         old_state = {}
         track_fields = 'res_id' in vals or 'res_model' in vals or 'user_id' in vals
         if track_fields:

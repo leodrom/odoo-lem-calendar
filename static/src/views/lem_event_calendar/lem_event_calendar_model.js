@@ -16,6 +16,12 @@ const ENTRY_TYPE_OPTIONS = [
     { value: "lead",   label: "Нагода" },
 ];
 
+const ENTRY_ROLE_ORDER = ["main", "prep"];
+const ENTRY_ROLE_OPTIONS = [
+    { value: "main", label: "Основна" },
+    { value: "prep", label: "Підготовча" },
+];
+
 export class LemCalendarModel extends CalendarModel {
     setup(params, services) {
         super.setup(params, services);
@@ -56,34 +62,56 @@ export class LemCalendarModel extends CalendarModel {
 
     async loadDynamicFilterSection(data, fieldName, filterInfo, previousSection) {
         const section = await super.loadDynamicFilterSection(data, fieldName, filterInfo, previousSection);
-
-        if (fieldName !== "entry_type") {
-            return section;
-        }
-
         const previousFilters = previousSection ? previousSection.filters : [];
 
-        // Normalize labels
-        for (const filter of section.filters) {
-            const opt = ENTRY_TYPE_OPTIONS.find((o) => o.value === filter.value);
-            if (opt) filter.label = opt.label;
+        if (fieldName === "entry_type") {
+            for (const filter of section.filters) {
+                const opt = ENTRY_TYPE_OPTIONS.find((o) => o.value === filter.value);
+                if (opt) filter.label = opt.label;
+            }
+            for (const { value, label } of ENTRY_TYPE_OPTIONS) {
+                if (!section.filters.find((f) => f.value === value)) {
+                    const previousFilter = previousFilters.find((f) => f.type === "dynamic" && f.value === value);
+                    section.filters.push({
+                        type: "dynamic",
+                        recordId: null,
+                        value,
+                        label,
+                        active: previousFilter ? previousFilter.active : true,
+                        canRemove: false,
+                        colorIndex: null,
+                        hasAvatar: false,
+                    });
+                }
+            }
         }
 
-        // Add missing options (so all 3 always appear)
-        for (const { value, label } of ENTRY_TYPE_OPTIONS) {
-            if (!section.filters.find((f) => f.value === value)) {
-                const previousFilter = previousFilters.find((f) => f.type === "dynamic" && f.value === value);
-                section.filters.push({
-                    type: "dynamic",
-                    recordId: null,
-                    value,
-                    label,
-                    active: previousFilter ? previousFilter.active : true,
-                    canRemove: false,
-                    colorIndex: null,
-                    hasAvatar: false,
-                });
+        if (fieldName === "entry_role") {
+            section.label = "Тип події";
+            for (const filter of section.filters) {
+                const opt = ENTRY_ROLE_OPTIONS.find((o) => o.value === filter.value);
+                if (opt) filter.label = opt.label;
             }
+            for (const { value, label } of ENTRY_ROLE_OPTIONS) {
+                if (!section.filters.find((f) => f.value === value)) {
+                    const previousFilter = previousFilters.find((f) => f.type === "dynamic" && f.value === value);
+                    section.filters.push({
+                        type: "dynamic",
+                        recordId: null,
+                        value,
+                        label,
+                        active: previousFilter ? previousFilter.active : true,
+                        canRemove: false,
+                        colorIndex: null,
+                        hasAvatar: false,
+                    });
+                }
+            }
+            section.filters.sort((a, b) => {
+                const ai = ENTRY_ROLE_ORDER.indexOf(a.value);
+                const bi = ENTRY_ROLE_ORDER.indexOf(b.value);
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
         }
 
         return section;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="lem_event_calendar.CalendarPopover" t-inherit="web.CalendarCommonPopover" t-inherit-mode="primary"/>
+
+    <t t-name="lem_event_calendar.CalendarPopover.body">
+        <t t-call="web.CalendarCommonPopover.body"/>
+        <t t-if="notesInfo">
+            <div class="o_lem_popover_notes border-top px-3 pt-2 pb-1">
+                <div class="o_lem_notes_content" t-out="notesInfo.html"/>
+                <a t-if="notesInfo.truncated"
+                   href="#"
+                   class="o_lem_notes_more"
+                   t-on-click.prevent="onEditEvent">докладніше...</a>
+            </div>
+        </t>
+    </t>
+
+    <t t-name="lem_event_calendar.CalendarPopover.footer">
+        <t t-if="isEventEditable or isEventViewable">
+            <a href="#" class="btn btn-primary o_cw_popover_edit" t-on-click="onEditEvent">
+                <t t-if="isEventEditable">Редагувати</t>
+                <t t-else="">Переглянути</t>
+            </a>
+        </t>
+        <t t-if="isEventEditable">
+            <a href="#" class="btn btn-secondary o_cw_popover_duplicate" t-on-click.prevent="onDuplicateEvent"
+               title="Дублювати">
+                <i class="fa fa-copy"/>
+            </a>
+        </t>
+        <t t-if="isEventDeletable">
+            <a href="#" class="btn btn-secondary o_cw_popover_delete" t-on-click="onDeleteEvent">
+                <i class="fa fa-trash"/>
+            </a>
+        </t>
+    </t>
+
+</templates>
