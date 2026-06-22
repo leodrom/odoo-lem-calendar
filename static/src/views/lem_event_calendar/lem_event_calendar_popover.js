@@ -22,8 +22,12 @@ export class LemCalendarPopover extends CalendarCommonPopover {
         const raw = this.props.record.rawRecord.description;
         if (!raw) return null;
         const tmp = document.createElement("div");
-        tmp.innerHTML = raw;
-        const text = (tmp.textContent || tmp.innerText || "").trim();
+        tmp.innerHTML = raw
+            .replace(/<br\s*\/?>/gi, "\n")
+            .replace(/<\/p>/gi, "\n")
+            .replace(/<\/div>/gi, "\n")
+            .replace(/<\/li>/gi, "\n");
+        const text = (tmp.textContent || "").replace(/\n{3,}/g, "\n\n").trim();
         if (!text) return null;
         if (text.length <= NOTES_LIMIT) {
             return { html: markup(raw), truncated: false };
