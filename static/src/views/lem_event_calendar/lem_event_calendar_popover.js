@@ -2,7 +2,7 @@ import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calen
 import { useService } from "@web/core/utils/hooks";
 import { markup } from "@odoo/owl";
 
-const NOTES_LIMIT = 300;
+const NOTES_LIMIT = 500;
 
 export class LemCalendarPopover extends CalendarCommonPopover {
     static template = "lem_event_calendar.CalendarPopover";
